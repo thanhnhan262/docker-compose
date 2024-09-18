@@ -30,7 +30,7 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    command: npm start # Run the backend after starting the container
+    command: ./wait-for-it.sh db:5432 -- npm start # Run the backend after starting the container
 
   # Vue.js Frontend (Frontend Service)
   frontend:
