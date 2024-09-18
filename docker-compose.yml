@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  # Node.js API (Backend Service)
+  api:
+    build:
+      context: ./my-web-service
+      dockerfile: Dockerfile
+    container_name: my-web-service
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    command: npm start # Run the backend after starting the container
+
+  # Vue.js Frontend (Frontend Service)
+  frontend:
+    build:
+      context: ./user-crud-app
+      dockerfile: Dockerfile
+    container_name: user-crud-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+    command: npm run serve # Run the frontend server
+
+volumes:
+  db-data:
