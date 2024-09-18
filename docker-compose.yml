@@ -23,6 +23,9 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 5432
+      DB_DATABASE: postgres
+      DB_USER: postgres
+      DB_PASSWORD: admin
     ports:
       - "3000:3000"
     depends_on:
